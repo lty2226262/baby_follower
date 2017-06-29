@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<launch>
+  <node name="laser_detector" pkg="baby_follower" type="laser_detector" output="screen"/>
+  <node name="velocity_converter" pkg="baby_follower" type="velocity_converter" output="screen"/>  
+  <node name="human_tracker" pkg="baby_follower" type="human_tracker" output="screen"/>  
+</launch>
