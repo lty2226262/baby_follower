@@ -67,7 +67,7 @@ class LaserDetector{
   // Human trailing_edge_count = rising_edge_count = 1 reward  
   const double reward_coefficient_ = 1.80, penalty_coefficient_ = 0.60;
   const double human_distance_max_ = 0.8, human_distance_min_ = 0.1;
-  const double human_position_max_ = 60.0, human_position_min_ = 300.0;
+  const double human_position_max_ = 240.0, human_position_min_ = 120.0;
   const double human_width_max_ = 50.0, human_width_min_ = 3.0;
   
   // Lidar coordinate transformation

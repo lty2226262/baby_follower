@@ -9,16 +9,17 @@ VelocityConverter::VelocityConverter(ros::NodeHandle& node_handle) : node_handle
   node_handle_.param("base_frame", base_frame_, std::string("/base_link"));
   node_handle_.param("goal_frame",goal_frame_,std::string("/test/goal"));
   node_handle_.param("linear_tolerance", linear_tolerance_, 0.0);
-  node_handle_.param("angular_tolerance", angular_tolerance_, 0.2618);
+  node_handle_.param("angular_tolerance", angular_tolerance_, 0.0);
+//   node_handle_.param("angular_tolerance", angular_tolerance_, 0.2618);
   node_handle_.param("follow_distance", follow_distance_, 0.5);
   node_handle_.param("linear_k_p", linear_pid.k_p , 0.1);
   node_handle_.param("linear_k_i", linear_pid.k_i , 0.0);
   node_handle_.param("linear_k_d", linear_pid.k_d , 0.0);
   node_handle_.param("angular_k_p", angular_pid.k_p , 2.10);
-  node_handle_.param("angular_k_i", angular_pid.k_i , 1.381578);
-  node_handle_.param("angular_k_d", angular_pid.k_d , 1.798);
+  node_handle_.param("angular_k_i", angular_pid.k_i , 0.0);
+  node_handle_.param("angular_k_d", angular_pid.k_d , 0.0);
   node_handle_.param("linear_speed_limit", linear_speed_limit_, 0.0);
-  node_handle_.param("angular_speed_limit", angular_speed_limit_, 1.5);
+  node_handle_.param("angular_speed_limit", angular_speed_limit_, 0.5);
   
   // Setup topics
   velocity_converter_is_enabled_ = node_handle_.subscribe("/velocity_converter_is_enabled", 1, &VelocityConverter::TrigCallback, this);
@@ -46,14 +47,14 @@ void VelocityConverter::TrigCallback(const std_msgs::Bool& msg){
 //#endif
     VelocityPIDCalculate(linear_pid, current_linear_distance_);
     VelocityPIDCalculate(angular_pid, current_angular_distance_);
-#ifdef VELO_DEBUG
-    ROS_INFO_STREAM("angular speed is(p):" << angular_pid.p_out);
-    ROS_INFO_STREAM("angular speed is(i):" << angular_pid.i_out);
-    ROS_INFO_STREAM("angular speed is(d):" << angular_pid.d_out);
-    ROS_INFO_STREAM("angular speed is:" << angular_pid.total_out);
-    ROS_INFO_STREAM("angular speed is(time):" << angular_pid.current_time - angular_pid.last_time);
-    ROS_INFO_STREAM("angular error is:" << current_angular_distance_);
-#endif
+// #ifdef VELO_DEBUG
+//     ROS_INFO_STREAM("angular speed is(p):" << angular_pid.p_out);
+//     ROS_INFO_STREAM("angular speed is(i):" << angular_pid.i_out);
+//     ROS_INFO_STREAM("angular speed is(d):" << angular_pid.d_out);
+//     ROS_INFO_STREAM("angular speed is:" << angular_pid.total_out);
+//     ROS_INFO_STREAM("angular speed is(time):" << angular_pid.current_time - angular_pid.last_time);
+//     ROS_INFO_STREAM("angular error is:" << current_angular_distance_);
+// #endif
     VelocityUpdate(linear_pid.total_out, angular_pid.total_out);
   }
   else;
@@ -85,7 +86,7 @@ void VelocityConverter::VelocityPIDCalculate(VelocityPID& velocity_pid, tfScalar
 #ifdef VELO_DEBUG
 //    ROS_INFO_STREAM("current time" << velocity_pid.current_time);
 //    ROS_INFO_STREAM("last time" << velocity_pid.last_time);
-    ROS_INFO_STREAM("Duration: " << velocity_pid.current_time - velocity_pid.last_time);
+//     ROS_INFO_STREAM("Duration: " << velocity_pid.current_time - velocity_pid.last_time);
 //    ROS_INFO_STREAM("Error: " << error);
 //    ROS_INFO_STREAM("Last_error: " << velocity_pid.pre_error);
 #endif

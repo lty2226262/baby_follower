@@ -208,13 +208,13 @@ void HumanEstimation::measure(geometry_msgs::PointStamped& observed_goal, ros::T
     return;
   } else{
     geometry_msgs::PointStamped local_goal;
-    geometry_msgs::PointStamped last_global_goal;
-    last_global_goal.header = observed_goal.header;
-    last_global_goal.point.x = filter_estimate_old_.getOrigin().getX();
-    last_global_goal.point.y = filter_estimate_old_.getOrigin().getY();
-    last_global_goal.point.z = filter_estimate_old_.getOrigin().getZ();
+//     geometry_msgs::PointStamped last_global_goal;
+//     last_global_goal.header = observed_goal.header;
+//     last_global_goal.point.x = filter_estimate_old_.getOrigin().getX();
+//     last_global_goal.point.y = filter_estimate_old_.getOrigin().getY();
+//     last_global_goal.point.z = filter_estimate_old_.getOrigin().getZ();
     
-    tf_listener_.transformPoint(laser_frame_name, ros::Time(0), last_global_goal, odom_frame_name_, local_goal);
+    tf_listener_.transformPoint(laser_frame_name, ros::Time(0), observed_goal, odom_frame_name_, local_goal);
     double local_theta = atan2(local_goal.point.y,local_goal.point.x);
     double local_rho = sqrt(pow(local_goal.point.x, 2) + pow(local_goal.point.y, 2));
     request_all_human_.call(request_all_human_srv_);
@@ -237,7 +237,7 @@ void HumanEstimation::measure(geometry_msgs::PointStamped& observed_goal, ros::T
     if (distance_vector[min_index] < distance_tolerance_){
       measure_availiable = true;
       if (!(distance_initialized_)){
-// 	last_width_ = tan(all_human[min_index].width/2) * all_human[min_index].distance * 2;
+	last_width_ = tan(all_human[min_index].width/2) * all_human[min_index].distance * 2;
 	distance_initialized_ = true;
       }
 // #ifdef HUMAN_DEBUG
