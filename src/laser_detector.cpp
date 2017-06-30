@@ -7,7 +7,7 @@ namespace laserdetector {
 LaserDetector::LaserDetector(ros::NodeHandle& node_handle): node_handle_(node_handle){
   node_handle_.param("laser_topic_name", laser_topic_name_, std::string("/scan"));
   node_handle_.param("lidar_frame", laser_frame_name_, std::string("/laser"));
-  node_handle_.param("laser_config_file_name", laser_config_file_name_, std::string("/home/tt/.ros/LS01.yml")); 
+  node_handle_.param("laser_config_file_name", laser_config_file_name_, std::string("LS01.yml")); 
   
   
   scan_subscriber_ = node_handle_.subscribe(laser_topic_name_, 1, &LaserDetector::LaserScanCallback, this);
@@ -275,6 +275,7 @@ std::vector<Human> LaserDetector::HumansPositionCauculation(double k_distance_di
   for (std::vector<Human>::iterator it = humans.begin(); it!= humans.end(); ++it){
     it -> human_confidence *= ((it -> human_distance < human_distance_max_) && (it -> human_distance > human_distance_min_)) ? reward_coefficient_ : penalty_coefficient_;
     it -> human_confidence *= ((it -> human_position > human_position_max_) && (it -> human_position < human_position_min_)) ? penalty_coefficient_: reward_coefficient_;
+    it -> human_confidence *= ((double)it -> obstacle_count / (double)it -> human_width > 0.50 ) ? penalty_coefficient_: reward_coefficient_;
     it -> human_confidence *= ((it -> human_width < human_width_max_) && (it -> human_width > human_width_min_)) ? reward_coefficient_: 1.0;
     it -> human_confidence *= ((it -> rising_edge_count == 1) && (it -> trailing_edge_count == 1)) ? reward_coefficient_ : 1.0;
   }

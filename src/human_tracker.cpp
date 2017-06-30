@@ -196,8 +196,8 @@ void HumanEstimation::Initialize(const geometry_msgs::PointStamped observed_goal
   filter_initialized_ = true;
   
   // measurement initialized
-  measure_noise_covariance_(1,1) = pow(1, 2);
-  measure_noise_covariance_(2,2) = pow(1, 2);
+  measure_noise_covariance_(1,1) = pow(30000, 2);
+  measure_noise_covariance_(2,2) = pow(30000, 2);
 }
 
 void HumanEstimation::measure(geometry_msgs::PointStamped& observed_goal, ros::Time& filter_time, bool& measure_availiable, std::string laser_frame_name, std::string odom_frame_name){

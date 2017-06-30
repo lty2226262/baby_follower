@@ -1,7 +1,7 @@
 
 #include "velocity_converter.h"
 
-#define VELO_DEBUG
+#define VELO_DEBU_G
 
 namespace velocityconverter{
 VelocityConverter::VelocityConverter(ros::NodeHandle& node_handle) : node_handle_(node_handle){ 
@@ -19,7 +19,7 @@ VelocityConverter::VelocityConverter(ros::NodeHandle& node_handle) : node_handle
   node_handle_.param("angular_k_i", angular_pid.k_i , 0.0);
   node_handle_.param("angular_k_d", angular_pid.k_d , 0.0);
   node_handle_.param("linear_speed_limit", linear_speed_limit_, 0.0);
-  node_handle_.param("angular_speed_limit", angular_speed_limit_, 0.5);
+  node_handle_.param("angular_speed_limit", angular_speed_limit_, 3.5);
   
   // Setup topics
   velocity_converter_is_enabled_ = node_handle_.subscribe("/velocity_converter_is_enabled", 1, &VelocityConverter::TrigCallback, this);
